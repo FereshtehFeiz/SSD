@@ -52,6 +52,14 @@ class DatasetCatalog:
             "data_dir": "val2014",
             "ann_file": "annotations/instances_val2014.json"
         },
+        'clipart_train': {
+            "data_dir": "clipart",
+            "split": "train"
+        },
+        'clipart_test': {
+            "data_dir": "clipart",
+            "split": "test"
+        },
     }
 
     @staticmethod
@@ -64,6 +72,17 @@ class DatasetCatalog:
             attrs = DatasetCatalog.DATASETS[name]
             args = dict(
                 data_dir=os.path.join(voc_root, attrs["data_dir"]),
+                split=attrs["split"],
+            )
+            return dict(factory="VOCDataset", args=args)
+        elif "clipart" in name:
+            clipart_root = DatasetCatalog.DATA_DIR
+            if 'CLIPART_ROOT' in os.environ:
+                clipart_root = os.environ['CLIPART_ROOT']
+            
+            attrs = DatasetCatalog.DATASETS[name]
+            args = dict(
+                data_dir=os.path.join(clipart_root, attrs["data_dir"]),
                 split=attrs["split"],
             )
             return dict(factory="VOCDataset", args=args)
